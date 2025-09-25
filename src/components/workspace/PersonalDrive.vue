@@ -1088,7 +1088,7 @@ onMounted(() => {
     </v-dialog>
 
     <!-- 개인문서 생성 모달 -->
-    <v-dialog v-model="showSharedDocModal" max-width="600px" @click:outside="closeModals">
+    <v-dialog v-model="showSharedDocModal" max-width="600px" max-height="80vh" @click:outside="closeModals">
       <v-card class="personal-doc-modal">
         <v-card-title class="modal-header">
           <div class="header-content">
@@ -1098,7 +1098,7 @@ onMounted(() => {
           <v-btn icon="mdi-close" variant="text" @click="closeModals"></v-btn>
         </v-card-title>
         
-        <v-card-text class="modal-body">
+        <v-card-text class="modal-body" style="max-height: 400px; overflow-y: auto;">
           <v-text-field
             v-model="sharedDocTitle"
             label="개인문서 제목"
@@ -1110,7 +1110,7 @@ onMounted(() => {
           />
           
           <!-- 폴더 위치 선택 -->
-          <div class="folder-selection mb-4">
+          <div class="folder-selection mb-4" style="position: relative;">
             <label class="input-label">저장 위치</label>
             <div class="folder-selector" @click="showFolderSelector = !showFolderSelector">
               <div class="selected-folder">
@@ -1847,7 +1847,7 @@ onMounted(() => {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 1000;
-  max-height: 200px;
+  max-height: 250px;
   overflow-y: auto;
   margin-top: 4px;
 }

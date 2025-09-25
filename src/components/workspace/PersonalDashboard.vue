@@ -2,7 +2,8 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
-  currentChannel: String
+  currentChannel: String,
+  navigateToPersonalDrive: Function
 })
 
 // 통계 데이터
@@ -270,7 +271,10 @@ const executeQuickAction = (action) => {
       showAddScheduleModal.value = true
       break
     case 'create-document':
-      console.log('문서 생성 페이지로 이동')
+      // 내 드라이브로 이동하여 개인문서 생성
+      if (props.navigateToPersonalDrive) {
+        props.navigateToPersonalDrive()
+      }
       break
   }
 }

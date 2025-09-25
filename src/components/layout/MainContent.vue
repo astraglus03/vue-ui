@@ -20,6 +20,8 @@ const props = defineProps({
   workspaceSidebarCollapsed: Boolean
 })
 
+const emit = defineEmits(['navigate-to-channel'])
+
 // 선택된 일정 정보
 const selectedSchedule = ref('general-schedule')
 
@@ -34,6 +36,11 @@ const handleScheduleSelect = (event) => {
 // 채널 선택 이벤트 리스너
 const handleChannelSelect = (event) => {
   selectedChannel.value = event.detail.subChannelId
+}
+
+// 개인 드라이브로 이동하는 함수
+const navigateToPersonalDrive = () => {
+  emit('navigate-to-channel', 'drive')
 }
 
 onMounted(() => {
@@ -97,6 +104,7 @@ const contentStyle = computed(() => {
       :current-channel="currentChannel" 
       :selected-schedule="selectedSchedule"
       :selected-channel="selectedChannel"
+      :navigate-to-personal-drive="navigateToPersonalDrive"
     />
     
     <!-- 멤버 사이드바 (팀 워크스페이스일 때만 표시) -->

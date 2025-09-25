@@ -73,6 +73,11 @@ const selectChannel = (channelId) => {
   selectedSubChannel.value = '' // 하위 채널 선택 초기화
 }
 
+// MainContent에서 채널 변경 요청 처리
+const handleNavigateToChannel = (channelId) => {
+  selectChannel(channelId)
+}
+
 // 하위 채널 선택
 const selectSubChannel = (parentId, subChannelId) => {
   selectedSubChannel.value = subChannelId
@@ -148,6 +153,7 @@ const currentWorkspaceInfo = computed(() => {
         :current-channel="currentChannel"
         :member-sidebar-visible="memberSidebarVisible"
         :workspace-sidebar-collapsed="workspaceSidebarCollapsed"
+        @navigate-to-channel="handleNavigateToChannel"
       />
 
       <!-- 사용자 상태 (개인 워크스페이스일 때만 표시) -->
