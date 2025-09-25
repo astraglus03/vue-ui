@@ -2380,14 +2380,30 @@ onMounted(() => {
     </v-dialog>
 
     <!-- 날짜별 이벤트 모달 -->
-    <v-dialog v-model="showDayEventsModal" max-width="500px" @click:outside="closeDayEventsModal">
+    <v-dialog v-model="showDayEventsModal" max-width="600px" @click:outside="closeDayEventsModal">
       <v-card class="day-events-modal" v-if="selectedDay">
+        <!-- 모달 헤더 -->
         <div class="modal-header">
-          <h3 class="modal-title">{{ selectedDay.getMonth() + 1 }}월 {{ selectedDay.getDate() }}일</h3>
-          <v-btn icon @click="closeDayEventsModal">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
+          <div class="header-content">
+            <div class="header-left">
+              <v-icon class="header-icon">mdi-calendar-today</v-icon>
+              <div class="header-text">
+                <h2 class="modal-title">{{ selectedDay.getMonth() + 1 }}월 {{ selectedDay.getDate() }}일</h2>
+                <p class="modal-subtitle">{{ selectedDayEvents.length }}개의 일정이 있습니다</p>
+              </div>
+            </div>
+            <v-btn 
+              icon
+              variant="text"
+              @click="closeDayEventsModal"
+              class="close-btn"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </div>
         </div>
+
+        <v-divider />
         
         <div class="modal-content">
           <div class="day-events-list">
@@ -3884,8 +3900,63 @@ onMounted(() => {
 
 /* 날짜별 이벤트 모달 */
 .day-events-modal {
-  border-radius: 12px;
+  border-radius: 16px !important;
   overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+.modal-header {
+  padding: 24px 24px 16px;
+  background: rgb(var(--v-theme-surface));
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-icon {
+  font-size: 24px;
+  color: rgb(var(--v-theme-primary));
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  color: rgb(var(--v-theme-on-surface));
+  letter-spacing: -0.025em;
+}
+
+.modal-subtitle {
+  font-size: 14px;
+  color: rgba(var(--v-theme-on-surface), 0.6);
+  margin: 0;
+}
+
+.close-btn {
+  color: rgba(var(--v-theme-on-surface), 0.6) !important;
+  background: rgba(var(--v-theme-on-surface), 0.08) !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+.close-btn:hover {
+  background: rgba(var(--v-theme-on-surface), 0.12) !important;
+  color: rgb(var(--v-theme-on-surface)) !important;
 }
 
 .day-events-list {
