@@ -2,6 +2,7 @@
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import PersonalDashboard from '../workspace/PersonalDashboard.vue'
 import PersonalFriends from '../workspace/PersonalFriends.vue'
+import PersonalDrive from '../workspace/PersonalDrive.vue'
 import PersonalCalendar from '../workspace/PersonalCalendar.vue'
 import PersonalProfile from '../workspace/PersonalProfile.vue'
 import PersonalChat from '../workspace/PersonalChat.vue'
@@ -53,6 +54,7 @@ const currentComponent = computed(() => {
     switch (props.currentChannel) {
       case 'dashboard': return PersonalDashboard
       case 'friends': return PersonalFriends
+      case 'drive': return PersonalDrive
       case 'calendar': return PersonalCalendar
       case 'profile': return PersonalProfile
       case '1-1-chat': return PersonalChat // 1:1 채팅

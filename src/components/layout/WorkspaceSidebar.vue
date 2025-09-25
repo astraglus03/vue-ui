@@ -28,6 +28,7 @@ const newScheduleName = ref('')
 const personalChannels = ref([
   { id: 'dashboard', name: '내 대시보드', icon: 'mdi-view-dashboard', type: 'main' },
   { id: 'friends', name: '내 친구관리', icon: 'mdi-account-group', type: 'main' },
+  { id: 'drive', name: '내 드라이브', icon: 'mdi-folder-account', type: 'main' },
   { id: 'calendar', name: '내 일정관리', icon: 'mdi-calendar', type: 'main' },
   { id: 'profile', name: '마이페이지', icon: 'mdi-account-cog', type: 'main' }
 ])
