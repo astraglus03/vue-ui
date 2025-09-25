@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synco 팀 워크스페이스</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 60px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            color: #6366f1;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-icon {
+            width: 20px;
+            height: 20px;
+            color: #8b9dc3;
+            cursor: pointer;
+        }
+
+        .profile-btn {
+            width: 32px;
+            height: 32px;
+            background: #6366f1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .server-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            top: 60px;
+            left: 72px;
+            right: 0;
+            z-index: 999;
+            height: 50px;
+        }
+
+        .server-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .server-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .server-icon-small {
+            width: 24px;
+            height: 24px;
+            background: #6366f1;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .server-header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .server-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: #8b9dc3;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .server-action-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+            color: white;
+        }
+
+        .server-search {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 8px 16px;
+            gap: 8px;
+            min-width: 200px;
+        }
+
+        .server-search input {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            flex: 1;
+        }
+
+        .server-search input::placeholder {
+            color: #8b9dc3;
+        }
+
+        .server-search-icon {
+            width: 16px;
+            height: 16px;
+            color: #8b9dc3;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 110px;
+        }
+
+        .server-sidebar {
+            width: 72px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: fixed;
+            left: 0;
+            top: 60px;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .server-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            color: white;
+            font-weight: 600;
+        }
+
+        .server-icon:hover {
+            border-radius: 16px;
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .server-icon.home {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .server-icon.active {
+            background: #6366f1;
+            border-radius: 16px;
+        }
+
+        .server-icon.active::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            width: 4px;
+            height: 20px;
+            background: white;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .server-divider {
+            width: 32px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1px;
+            margin: 4px 0;
+        }
+
+        .add-server {
+            color: #22c55e;
+            font-size: 24px;
+            font-weight: 300;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 24px 0 80px 0;
+            margin-left: 72px;
+            position: fixed;
+            left: 0;
+            top: 110px;
+            bottom: 0;
+            z-index: 99;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-280px);
+        }
+
+        .sidebar-toggle-inside {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #8b9dc3;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-toggle-inside:hover {
+            background: rgba(99, 102, 241, 0.2);
+            color: white;
+        }
+
+        .sidebar-toggle-outside {
+            position: fixed;
+            left: 80px;
+            top: 125px;
+            z-index: 1001;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(99, 102, 241, 0.4);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-toggle-outside:hover {
+            background: rgba(99, 102, 241, 0.4);
+            border-color: rgba(99, 102, 241, 0.6);
+            transform: scale(1.1);
+        }
+
+        .sidebar-toggle-outside.show {
+            display: flex;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            color: #8b9dc3;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-item:hover, .sidebar-item.active {
+            background: rgba(99, 102, 241, 0.1);
+            color: white;
+            border-right: 2px solid #6366f1;
+        }
+
+        .sidebar-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .content {
+            flex: 1;
+            padding: 40px;
+            margin-left: 352px;
+            overflow-y: auto;
+            min-height: calc(100vh - 110px);
+            transition: margin-left 0.3s ease;
+        }
+
+        .content.sidebar-collapsed {
+            margin-left: 72px;
+        }
+
+        .welcome {
+            margin-bottom: 40px;
+        }
+
+        .welcome h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #8b9dc3;
+            font-size: 16px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-left {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .dashboard-right {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .widget-card {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .widget-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .widget-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .widget-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .widget-icon {
+            width: 20px;
+            height: 20px;
+            color: #6366f1;
+        }
+
+        .view-all {
+            color: #6366f1;
+            font-size: 12px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .view-all:hover {
+            color: #818cf8;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .activity-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .activity-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 14px;
+            color: white;
+            margin-bottom: 2px;
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: #8b9dc3;
+        }
+
+        .member-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .member-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .member-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .member-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .status-dot {
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #1a1a2e;
+        }
+
+        .online { background: #23a55a; }
+        .away { background: #f0b232; }
+        .busy { background: #f23f43; }
+
+        .member-info h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .member-info p {
+            font-size: 12px;
+            color: #8b9dc3;
+        }
+
+        .schedule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .schedule-item {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid #6366f1;
+        }
+
+        .schedule-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .schedule-time {
+            font-size: 12px;
+            color: #8b9dc3;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .meeting-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .meeting-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 8px;
+        }
+
+        .meeting-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .meeting-info h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            margin-bottom: 2px;
+        }
+
+        .meeting-info p {
+            font-size: 12px;
+            color: #8b9dc3;
+        }
+
+        .join-btn {
+            padding: 6px 12px;
+            background: #22c55e;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .join-btn:hover {
+            background: #16a34a;
+        }
+
+        .document-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .document-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .document-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .document-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6366f1;
+        }
+
+        .document-info h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            margin-bottom: 2px;
+        }
+
+        .document-info p {
+            font-size: 12px;
+            color: #8b9dc3;
+        }
+
+        .user-status {
+            position: fixed;
+            bottom: 0;
+            left: 72px;
+            width: 280px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            z-index: 101;
+            height: 80px;
+            transition: transform 0.3s ease;
+        }
+
+        .user-status.sidebar-collapsed {
+            transform: translateX(-280px);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            border-radius: 8px;
+            padding: 4px;
+            transition: background 0.2s ease;
+        }
+
+        .user-info:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #6366f1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .user-status-dot {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            background: #23a55a;
+            border: 2px solid #1a1a2e;
+            border-radius: 50%;
+        }
+
+        .user-details h4 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .user-details p {
+            font-size: 12px;
+            color: #8b9dc3;
+        }
+
+        .status-menu {
+            position: absolute;
+            bottom: 85px;
+            left: 16px;
+            right: 16px;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px;
+            display: none;
+            z-index: 1000;
+            animation: slideUp 0.2s ease;
+        }
+
+        .status-menu.show {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .status-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            font-size: 14px;
+            color: white;
+        }
+
+        .status-option:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .status-option.active {
+            background: rgba(99, 102, 241, 0.3);
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .status-indicator.online {
+            background: #23a55a;
+        }
+
+        .status-indicator.away {
+            background: #f0b232;
+        }
+
+        .status-indicator.offline {
+            background: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <div class="logo">Synco</div>
+        </div>
+        <div class="header-right">
+            <svg class="header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <svg class="header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            <svg class="header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7H4l5-5v5z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div class="profile-btn">A</div>
+        </div>
+    </div>
+
+    <div class="sidebar-toggle-outside" id="sidebarToggleOutside" onclick="toggleSidebar()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+    </div>
+
+    <div class="server-header">
+        <div class="server-header-left">
+            <div class="server-name">
+                <div class="server-icon-small">S</div>
+                <span>스타트업 팀</span>
+            </div>
+        </div>
+        <div class="server-header-right">
+            <button class="server-action-btn">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                투표
+            </button>
+            <button class="server-action-btn">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7H4l5-5v5z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                알림
+            </button>
+            <button class="server-action-btn">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                친구
+            </button>
+            <div class="server-search">
+                <svg class="server-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input type="text" placeholder="팀 내 검색...">
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="server-sidebar">
+            <div class="server-icon home">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+            </div>
+            <div class="server-divider"></div>
+            <div class="server-icon active">S</div>
+            <div class="server-icon">D</div>
+            <div class="server-icon">G</div>
+            <div class="server-icon add-server">+</div>
+        </div>
+
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-toggle-inside" onclick="toggleSidebar()">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </div>
+            <div class="sidebar-item active">
+                <svg class="sidebar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <span>팀 대시보드</span>
+            </div>
+            <div class="sidebar-item">
+                <svg class="sidebar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                </svg>
+                <span>팀 채팅</span>
+            </div>
+            <div class="sidebar-item">
+                <svg class="sidebar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0v1a1 1 0 001 1h4a1 1 0 001-1V7m-6 0H4a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2h-2"></path>
+                </svg>
+                <span>팀 일정관리</span>
+            </div>
+            <div class="sidebar-item">
+                <svg class="sidebar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 5l4-4 4 4"></path>
+                </svg>
+                <span>팀 드라이브</span>
+            </div>
+            <div class="sidebar-item">
+                <svg class="sidebar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+                <span>팀 화상회의</span>
+            </div>
+        </div>
+
+        <div class="content" id="content">
+            <div class="welcome">
+                <h1>팀 대시보드</h1>
+                <p>스타트업 팀의 활동과 현황을 한눈에 확인하세요</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-left">
+                    <!-- 최근 활동 위젯 -->
+                    <div class="widget-card">
+                        <div class="widget-header">
+                            <div class="widget-title">
+                                <svg class="widget-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                                최근 활동
+                            </div>
+                            <span class="view-all">모두 보기</span>
+                        </div>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-avatar">김</div>
+                                <div class="activity-info">
+                                    <div class="activity-text">김민수가 "프로젝트 기획서.pdf" 파일을 업로드했습니다</div>
+                                    <div class="activity-time">5분 전</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-avatar">이</div>
+                                <div class="activity-info">
+                                    <div class="activity-text">이지현이 마케팅 채널에 메시지를 보냈습니다</div>
+                                    <div class="activity-time">12분 전</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-avatar">박</div>
+                                <div class="activity-info">
+                                    <div class="activity-text">박준영이 새로운 일정을 추가했습니다: "클라이언트 미팅"</div>
+                                    <div class="activity-time">1시간 전</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-avatar">최</div>
+                                <div class="activity-info">
+                                    <div class="activity-text">최수진이 화상회의 "주간 스탠드업"을 시작했습니다</div>
+                                    <div class="activity-time">2시간 전</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 다가오는 일정 위젯 -->
+                    <div class="widget-card">
+                        <div class="widget-header">
+                            <div class="widget-title">
+                                <svg class="widget-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0v1a1 1 0 001 1h4a1 1 0 001-1V7m-6 0H4a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2h-2"></path>
+                                </svg>
+                                다가오는 일정
+                            </div>
+                            <span class="view-all">일정 보기</span>
+                        </div>
+                        <div class="schedule-list">
+                            <div class="schedule-item">
+                                <div class="schedule-title">클라이언트 프레젠테이션</div>
+                                <div class="schedule-time">
+                                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12,6 12,12 16,14"></polyline>
+                                    </svg>
+                                    오늘 오후 2:00
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-title">팀 회식</div>
+                                <div class="schedule-time">
+                                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12,6 12,12 16,14"></polyline>
+                                    </svg>
+                                    내일 오후 6:30
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-title">월간 보고서 제출</div>
+                                <div class="schedule-time">
+                                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12,6 12,12 16,14"></polyline>
+                                    </svg>
+                                    9월 30일 오후 5:00
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-right">
+                    <!-- 참여중인 멤버 위젯 -->
+                    <div class="widget-card">
+                        <div class="widget-header">
+                            <div class="widget-title">
+                                <svg class="widget-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                                팀 멤버 (6명)
+                            </div>
+                            <span class="view-all">모두 보기</span>
+                        </div>
+                        <div class="member-list">
+                            <div class="member-item">
+                                <div class="member-avatar">
+                                    김
+                                    <div class="status-dot online"></div>
+                                </div>
+                                <div class="member-info">
+                                    <h4>김민수</h4>
+                                    <p>프로젝트 매니저</p>
+                                </div>
+                            </div>
+                            <div class="member-item">
+                                <div class="member-avatar">
+                                    이
+                                    <div class="status-dot online"></div>
+                                </div>
+                                <div class="member-info">
+                                    <h4>이지현</h4>
+                                    <p>마케팅 전문가</p>
+                                </div>
+                            </div>
+                            <div class="member-item">
+                                <div class="member-avatar">
+                                    박
+                                    <div class="status-dot away"></div>
+                                </div>
+                                <div class="member-info">
+                                    <h4>박준영</h4>
+                                    <p>개발자</p>
+                                </div>
+                            </div>
+                            <div class="member-item">
+                                <div class="member-avatar">
+                                    최
+                                    <div class="status-dot online"></div>
+                                </div>
+                                <div class="member-info">
+                                    <h4>최수진</h4>
+                                    <p>디자이너</p>
+                                </div>
+                            </div>
+                            <div class="member-item">
+                                <div class="member-avatar">
+                                    정
+                                    <div class="status-dot busy"></div>
+                                </div>
+                                <div class="member-info">
+                                    <h4>정현우</h4>
+                                    <p>데이터 분석가</p>
+                                </div>
+                            </div>
+                            <div class="member-item">
+                                <div class="member-avatar">
+                                    장
+                                    <div class="status-dot online"></div>
+                                </div>
+                                <div class="member-info">
+                                    <h4>장서연</h4>
+                                    <p>운영 관리자</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 활성화된 화상회의 위젯 -->
+                    <div class="widget-card">
+                        <div class="widget-header">
+                            <div class="widget-title">
+                                <svg class="widget-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                </svg>
+                                진행중인 회의
+                            </div>
+                        </div>
+                        <div class="meeting-list">
+                            <div class="meeting-item">
+                                <div class="meeting-status"></div>
+                                <div class="meeting-info">
+                                    <h4>주간 스탠드업 미팅</h4>
+                                    <p>3명 참여중 • 12분 진행</p>
+                                </div>
+                                <button class="join-btn">참여</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 최근 업로드된 문서 위젯 -->
+                    <div class="widget-card">
+                        <div class="widget-header">
+                            <div class="widget-title">
+                                <svg class="widget-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                최근 문서
+                            </div>
+                            <span class="view-all">드라이브 열기</span>
+                        </div>
+                        <div class="document-list">
+                            <div class="document-item">
+                                <div class="document-icon">
+                                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                                    </svg>
+                                </div>
+                                <div class="document-info">
+                                    <h4>프로젝트 기획서.pdf</h4>
+                                    <p>김민수 • 5분 전</p>
+                                </div>
+                            </div>
+                            <div class="document-item">
+                                <div class="document-icon">
+                                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M6,2A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6M6,4H13V9H18V20H6V4Z"/>
+                                    </svg>
+                                </div>
+                                <div class="document-info">
+                                    <h4>마케팅 전략.docx</h4>
+                                    <p>이지현 • 1시간 전</p>
+                                </div>
+                            </div>
+                            <div class="document-item">
+                                <div class="document-icon">
+                                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                                    </svg>
+                                </div>
+                                <div class="document-info">
+                                    <h4>UI 디자인 가이드.psd</h4>
+                                    <p>최수진 • 3시간 전</p>
+                                </div>
+                            </div>
+                            <div class="document-item">
+                                <div class="document-icon">
+                                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                                    </svg>
+                                </div>
+                                <div class="document-info">
+                                    <h4>데이터 분석 보고서.xlsx</h4>
+                                    <p>정현우 • 어제</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="user-status" id="userStatus">
+            <div class="status-menu" id="statusMenu">
+                <div class="status-option active" data-status="online">
+                    <div class="status-indicator online"></div>
+                    <span>온라인</span>
+                </div>
+                <div class="status-option" data-status="away">
+                    <div class="status-indicator away"></div>
+                    <span>자리 비움</span>
+                </div>
+                <div class="status-option" data-status="offline">
+                    <div class="status-indicator offline"></div>
+                    <span>오프라인 표시</span>
+                </div>
+            </div>
+            <div class="user-info" onclick="toggleStatusMenu()">
+                <div class="user-avatar">
+                    A
+                    <div class="user-status-dot" id="userStatusDot"></div>
+                </div>
+                <div class="user-details">
+                    <h4>사용자</h4>
+                    <p id="userStatusText">온라인</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            const userStatus = document.getElementById('userStatus');
+            const toggleOutside = document.getElementById('sidebarToggleOutside');
+
+            sidebar.classList.toggle('collapsed');
+            content.classList.toggle('sidebar-collapsed');
+            userStatus.classList.toggle('sidebar-collapsed');
+            toggleOutside.classList.toggle('show');
+        }
+
+        function toggleStatusMenu() {
+            const statusMenu = document.getElementById('statusMenu');
+            statusMenu.classList.toggle('show');
+        }
+
+        // 상태 변경 함수
+        function changeStatus(status) {
+            const statusOptions = document.querySelectorAll('.status-option');
+            const userStatusDot = document.getElementById('userStatusDot');
+            const userStatusText = document.getElementById('userStatusText');
+            const statusMenu = document.getElementById('statusMenu');
+
+            // 모든 옵션에서 active 클래스 제거
+            statusOptions.forEach(option => option.classList.remove('active'));
+            
+            // 선택된 옵션에 active 클래스 추가
+            const selectedOption = document.querySelector(`[data-status="${status}"]`);
+            selectedOption.classList.add('active');
+
+            // 사용자 상태 업데이트
+            userStatusDot.className = 'user-status-dot';
+            switch(status) {
+                case 'online':
+                    userStatusDot.style.background = '#23a55a';
+                    userStatusText.textContent = '온라인';
+                    break;
+                case 'away':
+                    userStatusDot.style.background = '#f0b232';
+                    userStatusText.textContent = '자리 비움';
+                    break;
+                case 'offline':
+                    userStatusDot.style.background = '#6b7280';
+                    userStatusText.textContent = '오프라인 표시';
+                    break;
+            }
+
+            // 메뉴 닫기
+            statusMenu.classList.remove('show');
+        }
+
+        // 상태 옵션 클릭 이벤트 리스너
+        document.addEventListener('DOMContentLoaded', function() {
+            const widgets = document.querySelectorAll('.widget-card');
+            widgets.forEach((widget, index) => {
+                widget.style.opacity = '0';
+                widget.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    widget.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    widget.style.opacity = '1';
+                    widget.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // 상태 옵션 클릭 이벤트
+            const statusOptions = document.querySelectorAll('.status-option');
+            statusOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const status = this.getAttribute('data-status');
+                    changeStatus(status);
+                });
+            });
+
+            // 외부 클릭 시 메뉴 닫기
+            document.addEventListener('click', function(event) {
+                const statusMenu = document.getElementById('statusMenu');
+                const userInfo = document.querySelector('.user-info');
+                
+                if (!userInfo.contains(event.target) && !statusMenu.contains(event.target)) {
+                    statusMenu.classList.remove('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
